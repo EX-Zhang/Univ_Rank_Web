@@ -1,0 +1,75 @@
+<html>
+  <head>
+    
+    <meta charset = "utf-8" />
+
+    <title>ECharts Test</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+     
+    <script type="text/javascript" src="/static/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="text/javascript" src="/static/js/echarts.min.js"></script>
+    
+    <script type="text/javascript" src="/static/js/echarts.setup.js"></script>
+
+  </head>
+
+  <body>
+
+    <div id="main" class="text-center" style="width:1000px;height:500px;margin:auto;"></div>
+    
+    <script type="text/javascript">
+
+     setupChart({{univ_data|safe}});
+
+    </script>
+
+    <div style="margin:auto" class="text-center">
+
+    <span> 
+      <p>
+        <span>Language: </span>
+        <input type="radio" name="Lang" value="zh-cn"/> zh-cn
+        <input type="radio" name="Lang" value="en" checked="yes"/> en
+
+        <tr>
+        <span style="margin-left: 30px">Data Type:</span>
+        <select id="data_type">
+           <option value ="pie_chart" selected>Pie Chart</option>
+           <option value ="table">Table</option>
+        </select>
+
+      </p>
+ 
+    </span>
+      
+    <br>
+      
+    </div>
+
+    <div class="text-center input-group input-group-sm" style="width:800px;margin:auto;">
+
+      
+      <span style="margin-left:10px">From: </span>
+      <input id="Data_Start" type="text" class="form-control univ-range-input" style="width:10px;margin-left:20px">
+
+      <span style="margin-left:10px">To: </span>
+      <input id="Data_End" type="text" class="form-control univ-range-input" style="width:10px;margin-left:20px">
+
+       
+    </div>
+
+    <br>
+      
+    <div style="margin:auto" class="text-center">
+        <button onclick="GET_Univ_Data()" type="button" id="submit_range_btn" class="btn btn-primary">Get University</button>
+    </div>
+
+    
+  </body>
+</html> 
