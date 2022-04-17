@@ -34,6 +34,8 @@ function GET_Univ_Data() {
 
             $('#main').html(generate_table(data.data));
 
+            $('#UnivRankTable').slice(10).hide();
+
         }
         else {
 
@@ -126,13 +128,13 @@ function generate_table(table_data) {
 
     for (i in table_data.header) {
 
-        html += "<th style='margin-left:15px;'>" + table_data.header[i] + "</th>";
+        html += "<th style='margin-left:15px; border:1px black solid;'>" + table_data.header[i] + "</th>";
 
     }
 
     html += "</tr></thead>";
 
-    html += "<tbody>";
+    html += "<tbody id='UnivRankTbody'>";
 
     for (i in table_data.data) {
 
@@ -142,7 +144,7 @@ function generate_table(table_data) {
 
         for (j in cur) {
 
-            html += "<td>" + cur[j] + "</td>";
+            html += "<td style='border:1px black solid;'>" + cur[j] + "</td>";
 
         }
 
@@ -152,6 +154,6 @@ function generate_table(table_data) {
 
     html += "</tbody>";
 
-    return "<table style='border-collapse: collapse;margin:auto;' border='1' cellspacing='0'>" + html + "</table>";
+    return "<table id='UnivRankTable' style='border-collapse: collapse;margin:auto;' border='1' cellspacing='0'>" + html + "</table>";
 }
 

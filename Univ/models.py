@@ -20,6 +20,7 @@ class UnivRank(models.Model):
     univ_ref_rate = models.CharField(db_column='Univ_Ref_Rate', max_length=255, blank=True, null=True)  # Field name made lowercase.
     univ_acad_repu = models.CharField(db_column='Univ_Acad_Repu', max_length=255, blank=True, null=True)  # Field name made lowercase.
     univ_employer_repu = models.CharField(db_column='Univ_Employer_Repu', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    univ_reign_en = models.CharField(db_column='Univ_Reign_EN', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

@@ -18,7 +18,7 @@ def index(request):
 
     template = loader.get_template('Univ/index.html')
 
-    data = get_Univ_Data(0,10)['data']
+    data = get_Univ_Data(0,10,'en')['data']
 
     context = {
 
@@ -28,9 +28,9 @@ def index(request):
 
     return HttpResponse(template.render(context,request))
 
-def get_Univ_Data(start,end):
+def get_Univ_Data(start,end,lang):
 
-    result = UnivRank.objects.raw('select Univ_ID, Univ_Reign as Reign, count(Univ_ID) as Amount from univ_rank GROUP BY Univ_Reign ORDER BY Amount DESC')
+    result = UnivRank.objects.raw('select Univ_ID, Univ_Reign as Reign, Univ_Reign_EN as Reign_EN, count(Univ_ID) as Amount from univ_rank GROUP BY Univ_Reign ORDER BY Amount DESC')
 
     if min(start,end) < 0 or max(start,end) >= len(result):
 
@@ -42,11 +42,17 @@ def get_Univ_Data(start,end):
 
     for cur in result[start:end]:
 
-        data.append([cur.Reign,cur.Amount])
+        Reign = cur.Reign_EN
+
+        if lang == "zh-cn":
+
+            Reign = cur.Reign
+
+        data.append([Reign,cur.Amount])
 
     pie.add("",data)
 
-    pie.set_global_opts(title_opts=opts.TitleOpts(title="University Rank", subtitle="Reign and Amount"))
+    pie.set_global_opts(title_opts=opts.TitleOpts())
 
     return {'statue': 'Valid', 'data': pie.dump_options()} 
 
@@ -60,22 +66,20 @@ def requestData(request):
 
         end = int(request_data.get('end',default='10'))
 
-        print(request_data.get('lang')) 
-
         if request_data.get('data_type') == 'table':
 
             return JsonResponse(generate_HTML_Table(start,end,request_data.get('lang')))
 
         elif request_data.get('data_type') == 'pie_chart':
 
-            return JsonResponse(get_Univ_Data(start,end))
+            return JsonResponse(get_Univ_Data(start,end,request_data.get('lang')))
 
 
 def generate_HTML_Table(start,end,lang):
  
     tabel_data = {'header': ["Rank", "Name", "Country/Reign", "Score"], 'data': []}
     
-    result = UnivRank.objects.raw('select Univ_ID, Univ_Rank, Univ_Name, Univ_Reign, Univ_Score from univ_rank')
+    result = UnivRank.objects.raw('select Univ_ID, Univ_Rank, Univ_Name, Univ_Reign, Univ_Reign_EN, Univ_Score from univ_rank')
 
     if min(start,end) < 0 or max(start,end) >= len(result):
 
@@ -103,10 +107,8 @@ def generate_HTML_Table(start,end,lang):
 
             Name = Name[0:index]
 
-            gs = goslate.Goslate()
+            Reign = cur.univ_reign_en
             
-            #Reign = gs.translate(Reign,'en')
-
         tabel_data['data'].append([cur.univ_rank,Name,Reign,cur.univ_score])
 
     return {'statue': 'Valid', 'data': tabel_data}
